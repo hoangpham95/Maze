@@ -40,8 +40,6 @@ class Graph<T> {
         else {
             Edge<T> e = new Edge<T>(first, second, weight);
             this.edges.add(e);
-            first.edges.add(e);
-            second.edges.add(e);
         }
     }
     
@@ -96,15 +94,16 @@ class Graph<T> {
             if (unionFind.find(edge.first) == unionFind.find(edge.second))
                 continue;
             /* Otherwise, add the edge */
-            Node<T> newNode1 = result.find(edge.first.pos);
-            Node<T> newNode2 = result.find(edge.second.pos);
-            result.addEdge(newNode1, newNode2, edge.weight);
-            
-            numEdges += 1; // increase the number of added edges
-            
-            /* Link the endpoints together */
-            unionFind.union(edge.first, edge.second);
-            
+            else {
+                Node<T> newNode1 = result.find(edge.first.pos);
+                Node<T> newNode2 = result.find(edge.second.pos);
+                result.addEdge(newNode1, newNode2, edge.weight);
+                
+                numEdges += 1; // increase the number of added edges
+                
+                /* Link the endpoints together */
+                unionFind.union(edge.first, edge.second);
+            }
             /* If we've added enough already, quit */
             if (numEdges + 1 == this.nodes.size()) {
                 break;
@@ -114,10 +113,19 @@ class Graph<T> {
         return result;
     }
     
+    boolean noEmptyEdge() {
+        ArrayList<Node<T>> nodes = this.nodes;
+        for (Node<T> n : nodes) {
+            if (n.edges.size() == 0)
+                //System.out.println(n.toString());
+                return false;
+        }
+        return true;
+    }
     // Just for testing, delete afterwards
     void printNode() {
         for (Node<T> n : this.nodes) {
-            System.out.println(n.pos.toString());
+            System.out.println(n.pos.toString() + " - " + n.edges.size());
         }
     }
     

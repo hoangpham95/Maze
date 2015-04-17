@@ -52,10 +52,10 @@ class ExampleGraph {
         newGr = gr.minimumSpanningTree();
         
         board1 = new Graph<CartPt>();
-        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(4, 4);
+        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(3, 3);
         board1.nodes = ut.toArrayList(graphNodes);
         board1.edges = ut.connectMaze(graphNodes);
-        
+        ut.shuffle(board1.edges);
         maze1 = new Maze(board1);
         
         board2 = new Graph<CartPt>();
@@ -87,6 +87,7 @@ class ExampleGraph {
     }
     
     void testPrint(Tester t) {
+        newGr.printNode();
         newGr.printEdge();
         t.checkExpect(newGr.edges.size(), 4);
     }
@@ -95,6 +96,15 @@ class ExampleGraph {
         this.initialize();
         t.checkExpect(board1.edges.size(), 12);
         t.checkExpect(board1.nodes.size(), 9);
-        maze1.bigBang(500, 500, 0.5);
+        maze1.bigBang(500,  500);
+    }
+    
+    void testSpanTree(Tester t) {
+        this.initialize();
+        Graph<CartPt> gra = maze1.board.minimumSpanningTree();
+        t.checkExpect(gra.nodes.size(), 9);
+        t.checkExpect(gra.edges.size(), 8);
+        t.checkExpect(gr.noEmptyEdge(), true);
+        //t.checkExpect(newGr.noEmptyEdge(), true);
     }
 }

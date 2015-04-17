@@ -60,7 +60,7 @@ class Utils {
         Node<CartPt> snd = edge.second;
         CartPt middle = fst.pos.toPixel(Maze.CELL_SIZE).midPoint(snd.pos.toPixel(Maze.CELL_SIZE));
 
-        if (this.horizontal(edge)) {
+        /*if (this.horizontal(edge)) {
             CartPt startPoint1 = new CartPt(middle.x, middle.y - Maze.CELL_SIZE
                     / 2);
             CartPt startPoint2 = new CartPt(middle.x, middle.y + Maze.CELL_SIZE
@@ -75,8 +75,8 @@ class Utils {
                     middle.y);
             return new LineImage(startPoint1, startPoint2, new Color(255, 255,
                     255));
-        }
-        /*return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE), snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));*/
+        }*/
+        return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE), snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));
     }
     /*
      * The instructor allowed us to use
