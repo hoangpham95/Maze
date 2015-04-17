@@ -7,17 +7,18 @@ class UnionFind<T> {
      * is in its own partition. If the element already exists, this
      * function returns false. Otherwise, it returns true
      */
-    public void add(T elem) {
+    public boolean add(T elem) {
         /*Check for null */
         if (elem == null) {
             throw new NullPointerException("UnionFind does not support null!");
         }
         /* Check whether this entry exists; fail if it does */
         if (elements.containsKey(elem)) {
-            throw new IllegalArgumentException("This element is already inside!");
+            return false;
         }
         /* Otherwise add the element as its own parent */
         elements.put(elem, new Link<T>(elem));
+        return true;
     }
     
     public T find(T elem) {
