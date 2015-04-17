@@ -47,7 +47,7 @@ class Utils {
         /*
          * This node is original node. Need to translate to board's position
          */
-        return new RectangleImage(node.pos.toPixel(Maze.CELL_SIZE),
+        return new FrameImage(node.pos.toPixel(Maze.CELL_SIZE),
                 Maze.CELL_SIZE, Maze.CELL_SIZE, new Color(0, 0, 0));
     }
 
@@ -66,15 +66,15 @@ class Utils {
             CartPt startPoint2 = new CartPt(middle.x, middle.y + Maze.CELL_SIZE
                     / 2);
 
-            return new LineImage(startPoint1, startPoint2, new Color(255, 0,
-                    0));
+            return new LineImage(startPoint1, startPoint2, new Color(255, 255,
+                    255));
         } else {
             CartPt startPoint1 = new CartPt(middle.x - Maze.CELL_SIZE / 2,
                     middle.y);
             CartPt startPoint2 = new CartPt(middle.x + Maze.CELL_SIZE / 2,
                     middle.y);
-            return new LineImage(startPoint1, startPoint2, new Color(255, 0,
-                    0));
+            return new LineImage(startPoint1, startPoint2, new Color(255, 255,
+                    255));
         }
         /*return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE), snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));*/
     }
