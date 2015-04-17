@@ -116,6 +116,9 @@ class Utils {
                 result.add(new Edge<CartPt>(n1, n2));
                 result.add(new Edge<CartPt>(n1, n3));
             }
+            /* There is some problem on the connect Maze
+             * need to revise
+             */
             Node<CartPt> lastmember = x.get(x.size() - 1);
             Node<CartPt> lastmember2 = y.get(y.size() - 1);
             result.add(new Edge<CartPt>(lastmember, lastmember2));
