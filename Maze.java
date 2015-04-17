@@ -24,4 +24,8 @@ class Maze extends World{
             this.board = this.board.minimumSpanningTree();
         }
     }
+    
+    public void onTick() {
+        
+    }
 }
