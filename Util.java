@@ -78,20 +78,12 @@ class Utils {
         }
         /*return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE), snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));*/
     }
-    /* 
-     * There should be some problem with shuffle when 
-     * I try to shuffle the nodes in the graph
+    /*
+     * The instructor allowed us to use
+     * Collections in Java (check piazza)
      */
-    <T> ArrayList<T> shuffle(ArrayList<T> arr) {
-        Random rand = new Random();
-        ArrayList<T> result = new ArrayList<T>();
-        while (result.size() <= arr.size()) {
-            int index = rand.nextInt(arr.size());
-            T elem = arr.get(index);
-            result.add(elem);
-            arr.remove(elem);
-        }
-        return result;
+    <T> void shuffle(ArrayList<T> arr) {
+        Collections.shuffle(arr);
     }
 
     ArrayList<ArrayList<Node<CartPt>>> generateGraphPosition(

@@ -16,6 +16,12 @@ class Maze extends World{
     public WorldImage makeImage() {
         WorldImage background = new RectangleImage(new Posn(50, 50), 100, 100, new Color(255, 255, 255));
         Utils ut = new Utils();
-        return ut.drawGraph(background, this.board.minimumSpanningTree());
+        return ut.drawGraph(background, this.board);
+    }
+    
+    public void onKeyEvent(String ke) {
+        if (ke.equals("m")) {
+            this.board = this.board.minimumSpanningTree();
+        }
     }
 }
