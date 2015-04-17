@@ -78,7 +78,10 @@ class Utils {
         }
         /*return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE), snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));*/
     }
-
+    /* 
+     * There should be some problem with shuffle when 
+     * I try to shuffle the nodes in the graph
+     */
     <T> ArrayList<T> shuffle(ArrayList<T> arr) {
         Random rand = new Random();
         ArrayList<T> result = new ArrayList<T>();
