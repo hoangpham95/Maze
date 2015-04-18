@@ -52,7 +52,7 @@ class ExampleGraph {
         newGr = gr.minimumSpanningTree();
         
         board1 = new Graph<CartPt>();
-        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(50, 50);
+        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(20, 20);
         board1.nodes = ut.toArrayList(graphNodes);
         board1.edges = ut.connectMaze(graphNodes);
         ut.shuffle(board1.edges);
@@ -93,8 +93,8 @@ class ExampleGraph {
     }
     
     void testDraw(Tester t) {
-        /*this.initialize();
-        t.checkExpect(board1.edges.size(), 12);
+        this.initialize();
+        /*t.checkExpect(board1.edges.size(), 12);
         t.checkExpect(board1.nodes.size(), 9);*/
         maze1.bigBang(820, 820, 0.1);
     }

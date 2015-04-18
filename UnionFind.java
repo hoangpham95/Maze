@@ -42,7 +42,7 @@ class UnionFind<T> {
          * class and we should say so
          */
         if (info.parent == elem) {
-            return elem;
+            return elem; 
         }
         
         /* Otherwise, look up the parent of this element, then compress the 

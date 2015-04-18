@@ -8,7 +8,7 @@ class Maze extends World{
     Graph<CartPt> board;
     ArrayList<Edge<CartPt>> path;
     
-    static final int CELL_SIZE = 16;
+    static final int CELL_SIZE = 30;
     CartPt player;
     CartPt destination;
     Utils ut = new Utils();

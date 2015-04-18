@@ -34,8 +34,9 @@ class Utils {
         }
         return background;
     }
-    
-    WorldImage drawGraphPath(WorldImage background, ArrayList<Edge<CartPt>> edges) {
+
+    WorldImage drawGraphPath(WorldImage background,
+            ArrayList<Edge<CartPt>> edges) {
         for (Edge<CartPt> e : edges) {
             background = background.overlayImages(this.drawPath(e));
         }
@@ -49,10 +50,12 @@ class Utils {
         /*
          * This node is original node. Need to translate to board's position
          */
-        return new FrameImage(node.pos.toPixel(Maze.CELL_SIZE),
-                Maze.CELL_SIZE, Maze.CELL_SIZE, new Color(0, 0, 0));
-        /*return new DiskImage(node.pos.toPixel(Maze.CELL_SIZE),
-               5, new Color(0, 0, 0));*/
+        return new FrameImage(node.pos.toPixel(Maze.CELL_SIZE), Maze.CELL_SIZE,
+                Maze.CELL_SIZE, new Color(0, 0, 0));
+        /*
+         * return new DiskImage(node.pos.toPixel(Maze.CELL_SIZE), 5, new
+         * Color(0, 0, 0));
+         */
     }
 
     /*
@@ -62,7 +65,8 @@ class Utils {
     WorldImage drawEdge(Edge<CartPt> edge) {
         Node<CartPt> fst = edge.first;
         Node<CartPt> snd = edge.second;
-        CartPt middle = fst.pos.toPixel(Maze.CELL_SIZE).midPoint(snd.pos.toPixel(Maze.CELL_SIZE));
+        CartPt middle = fst.pos.toPixel(Maze.CELL_SIZE).midPoint(
+                snd.pos.toPixel(Maze.CELL_SIZE));
 
         if (this.horizontal(edge)) {
             CartPt startPoint1 = new CartPt(middle.x, middle.y - Maze.CELL_SIZE
@@ -81,15 +85,16 @@ class Utils {
                     255));
         }
     }
-    
+
     WorldImage drawPath(Edge<CartPt> edge) {
         Node<CartPt> fst = edge.first;
         Node<CartPt> snd = edge.second;
-        return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE), snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));
+        return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE),
+                snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0, 255));
     }
+
     /*
-     * The instructor allowed us to use
-     * Collections in Java (check piazza)
+     * The instructor allowed us to use Collections in Java (check piazza)
      */
     <T> void shuffle(ArrayList<T> arr) {
         Collections.shuffle(arr);
@@ -120,8 +125,8 @@ class Utils {
                 result.add(new Edge<CartPt>(n1, n2));
                 result.add(new Edge<CartPt>(n1, n3));
             }
-            /* There is some problem on the connect Maze
-             * need to revise
+            /*
+             * There is some problem on the connect Maze need to revise
              */
             Node<CartPt> lastmember = x.get(x.size() - 1);
             Node<CartPt> lastmember2 = y.get(y.size() - 1);
