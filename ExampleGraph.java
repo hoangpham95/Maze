@@ -76,7 +76,7 @@ class ExampleGraph {
     
     void testSort(Tester t) {
         Utils ut = new Utils();
-        //ut.sort(edges);
+        Collections.sort(edges, new EdgeComparator<String>());
         t.checkExpect(edges.get(0), AE);
         t.checkExpect(edges.get(1), CD);
         t.checkExpect(edges.get(2), AB);
