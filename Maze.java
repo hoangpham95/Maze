@@ -30,6 +30,7 @@ class Maze extends World{
             this.board = this.board.minimumSpanningTree();
         }
         if (ke.equals("p")) {
+            /* Add the path in to the maze */
             this.path = this.board.edges;
         }
     }
