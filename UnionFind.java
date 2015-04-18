@@ -7,18 +7,17 @@ class UnionFind<T> {
      * is in its own partition. If the element already exists, this
      * function returns false. Otherwise, it returns true
      */
-    public boolean add(T elem) {
+    public void add(T elem) {
         /*Check for null */
         if (elem == null) {
             throw new NullPointerException("UnionFind does not support null!");
         }
         /* Check whether this entry exists; fail if it does */
-        if (elements.containsKey(elem)) {
-            return false;
+        if (!elements.containsKey(elem)) {
+            elements.put(elem, new Link<T>(elem));
         }
         /* Otherwise add the element as its own parent */
-        elements.put(elem, new Link<T>(elem));
-        return true;
+        
     }
     
     public T find(T elem) {
@@ -64,30 +63,24 @@ class UnionFind<T> {
          * Get the link info for the parents. This also handles the
          * exception guarantee
          */
-        Link<T> firstLink = this.elements.get(one);
-        Link<T> secondLink = this.elements.get(two);
+        Link<T> firstLink = this.elements.get(this.find(one));
+        Link<T> secondLink = this.elements.get(this.find(two));
         
         /* IF these are the same object, we're done */
-        if (firstLink == secondLink) {
-            return;
-        }
-        
-        /* Otherwise, link the two. We'll do a union based on the rank of two nodes,
-         * where the parent with the lower rank will merge with the parent with higher
-         * rank
-         */
-        if (firstLink.rank > secondLink.rank) {
-            /*
-             * Since each parent must link to itself, the value of firstLink.parent
-             * is the representative of one
-             */
-            secondLink.parent = firstLink.parent;
-        } else if (firstLink.rank < secondLink.rank) {
-            firstLink.parent = secondLink.parent;
-        } else {
-            /* Arbitrarily wire one to be the parent of two */
-            secondLink.parent = firstLink.parent;
-            firstLink.rank += 1;
+        if (firstLink.parent != secondLink.parent) {
+            if (firstLink.rank > secondLink.rank) {
+                /*
+                 * Since each parent must link to itself, the value of firstLink.parent
+                 * is the representative of one
+                 */
+                secondLink.parent = firstLink.parent;
+            } else if (firstLink.rank < secondLink.rank) {
+                firstLink.parent = secondLink.parent;
+            } else {
+                /* Arbitrarily wire one to be the parent of two */
+                secondLink.parent = firstLink.parent;
+                firstLink.rank += 1;
+            }
         }
     }
 }

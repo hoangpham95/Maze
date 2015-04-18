@@ -1,13 +1,15 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 
 class Graph<T> {
     ArrayList<Node<T>> nodes;
     ArrayList<Edge<T>> edges;
-    
+    UnionFind<Node<T>> unionFind;
     Graph (ArrayList<Node<T>> nodes, ArrayList<Edge<T>> edges) {
         this.nodes = nodes;
         this.edges = edges;
+        this.unionFind = new UnionFind<Node<T>>();
     }
     
     /* Constructor for empty graph, easier to operate at first */
@@ -25,6 +27,9 @@ class Graph<T> {
         }
         else {
             this.nodes.add(node);
+            for (Edge<T> e : node.edges) {
+                this.edges.add(e);
+            }
         }
     }
     
@@ -70,15 +75,14 @@ class Graph<T> {
         
         /* Building up a collection of all edges of the graph */
         ArrayList<Edge<T>> edges = this.edges;
-        Utils ut = new Utils();
+        //Utils ut = new Utils();
         
         /* Now we need to sort the edges, in descending order */
-        ut.sort(edges);
+        Collections.sort(edges, new EdgeComparator<T>());
         
         /*Set up a partition of nodes*/
-        UnionFind<Node<T>> unionFind = new UnionFind<Node<T>>();
         for (Node<T> node : this.nodes) {
-            unionFind.add(node);
+            this.unionFind.add(node);
         }
         /*
          * Count how many edges we have already added
@@ -91,10 +95,8 @@ class Graph<T> {
          */
         for (Edge<T> edge : this.edges) {
             /* If the endpoints are connected, skip the edge */
-            if (unionFind.find(edge.first) == unionFind.find(edge.second))
-                continue;
             /* Otherwise, add the edge */
-            else {
+            if (this.unionFind.find(edge.first) != this.unionFind.find(edge.second)) {
                 Node<T> newNode1 = result.find(edge.first.pos);
                 Node<T> newNode2 = result.find(edge.second.pos);
                 result.addEdge(newNode1, newNode2, edge.weight);
@@ -102,7 +104,7 @@ class Graph<T> {
                 numEdges += 1; // increase the number of added edges
                 
                 /* Link the endpoints together */
-                unionFind.union(edge.first, edge.second);
+                this.unionFind.union(edge.first, edge.second);
             }
             /* If we've added enough already, quit */
             if (numEdges + 1 == this.nodes.size()) {

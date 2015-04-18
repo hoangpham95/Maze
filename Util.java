@@ -2,15 +2,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
 
 import javalib.worldimages.*;
 
 class Utils {
-    /* Sort an arrayList of edges */
-    <T> void sort(ArrayList<Edge<T>> edges) {
-        Collections.sort(edges, new EdgeComparator<T>());
-    }
 
     /*
      * These two functions below are only for the Maze they checked if the edge
@@ -39,6 +34,13 @@ class Utils {
         }
         return background;
     }
+    
+    WorldImage drawGraphPath(WorldImage background, ArrayList<Edge<CartPt>> edges) {
+        for (Edge<CartPt> e : edges) {
+            background = background.overlayImages(this.drawPath(e));
+        }
+        return background;
+    }
 
     /*
      * Draw the node framed outside
@@ -49,6 +51,8 @@ class Utils {
          */
         return new FrameImage(node.pos.toPixel(Maze.CELL_SIZE),
                 Maze.CELL_SIZE, Maze.CELL_SIZE, new Color(0, 0, 0));
+        /*return new DiskImage(node.pos.toPixel(Maze.CELL_SIZE),
+               5, new Color(0, 0, 0));*/
     }
 
     /*
@@ -60,7 +64,7 @@ class Utils {
         Node<CartPt> snd = edge.second;
         CartPt middle = fst.pos.toPixel(Maze.CELL_SIZE).midPoint(snd.pos.toPixel(Maze.CELL_SIZE));
 
-        /*if (this.horizontal(edge)) {
+        if (this.horizontal(edge)) {
             CartPt startPoint1 = new CartPt(middle.x, middle.y - Maze.CELL_SIZE
                     / 2);
             CartPt startPoint2 = new CartPt(middle.x, middle.y + Maze.CELL_SIZE
@@ -75,7 +79,12 @@ class Utils {
                     middle.y);
             return new LineImage(startPoint1, startPoint2, new Color(255, 255,
                     255));
-        }*/
+        }
+    }
+    
+    WorldImage drawPath(Edge<CartPt> edge) {
+        Node<CartPt> fst = edge.first;
+        Node<CartPt> snd = edge.second;
         return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE), snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));
     }
     /*
