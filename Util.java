@@ -32,14 +32,6 @@ class Utils {
         background = background.overlayImages(this.drawEdgeArrayHelp(edges, 0, edges.size()));
         return background;
     }
-
-    WorldImage drawGraphPath(WorldImage background,
-            ArrayList<Edge<CartPt>> edges) {
-        for (Edge<CartPt> e : edges) {
-            background = background.overlayImages(this.drawPath(e));
-        }
-        return background;
-    }
     
     private WorldImage drawEdgeArrayHelp(ArrayList<Edge<CartPt>> arr, int minIndex,
             int maxIndex) {
@@ -97,14 +89,7 @@ class Utils {
         }
         return bg;
     }
-
-    WorldImage drawPath(Edge<CartPt> edge) {
-        Node<CartPt> fst = edge.first;
-        Node<CartPt> snd = edge.second;
-        return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE),
-                snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));
-    }
-
+    
     /*
      * The instructor allowed us to use Collections in Java (check piazza)
      */
@@ -138,7 +123,7 @@ class Utils {
                 result.add(new Edge<CartPt>(n1, n3));
             }
             /*
-             * There is some problem on the connect Maze need to revise
+             * Connect the last column
              */
             Node<CartPt> lastmember = x.get(x.size() - 1);
             Node<CartPt> lastmember2 = y.get(y.size() - 1);
