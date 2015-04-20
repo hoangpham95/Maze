@@ -1,8 +1,10 @@
+import java.awt.Color;
 import java.util.ArrayList;
 
 class Node<T> {
     T pos;
     ArrayList<Edge<T>> edges;
+    Color col;
     
     Node (T pos, ArrayList<Edge<T>> edges) {
         this.pos = pos;

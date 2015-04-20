@@ -29,9 +29,7 @@ class Utils {
         for (Node<CartPt> node : nodes) {
             background = background.overlayImages(this.drawNode(node));
         }
-        for (Edge<CartPt> edge : edges) {
-            background = background.overlayImages(this.drawEdge(edge));
-        }
+        background = background.overlayImages(this.drawEdgeArrayHelp(edges, 0, edges.size()));
         return background;
     }
 
@@ -42,11 +40,25 @@ class Utils {
         }
         return background;
     }
-
+    
+    private WorldImage drawEdgeArrayHelp(ArrayList<Edge<CartPt>> arr, int minIndex,
+            int maxIndex) {
+        if (maxIndex - minIndex == 1) {
+            return this.drawEdge(arr.get(minIndex));
+        }
+        else {
+            WorldImage image1 = this.drawEdgeArrayHelp(arr, minIndex,
+                    (minIndex + maxIndex) / 2);
+            WorldImage image2 = this.drawEdgeArrayHelp(arr,
+                    (minIndex + maxIndex) / 2, maxIndex);
+            return image1.overlayImages(image2);
+        }
+    }
+    
     /*
      * Draw the node framed outside
      */
-    WorldImage drawNode(Node<CartPt> node) {
+    private WorldImage drawNode(Node<CartPt> node) {
         /*
          * This node is original node. Need to translate to board's position
          */
@@ -57,40 +69,40 @@ class Utils {
          * Color(0, 0, 0));
          */
     }
+    
+    WorldImage drawNodesInGraph(WorldImage bg, ArrayList<Node<CartPt>> nodes) {
+        for (Node<CartPt> n : nodes) {
+            bg = bg.overlayImages(this.drawNode(n));
+        }
+        return bg;
+    }
 
     /*
      * Draw the edge between two node: if the (real) edge is vertical, draw the
      * (invisible) horizontal edge, and vice versa
      */
-    WorldImage drawEdge(Edge<CartPt> edge) {
+    private WorldImage drawEdge(Edge<CartPt> edge) {
         Node<CartPt> fst = edge.first;
         Node<CartPt> snd = edge.second;
-        CartPt middle = fst.pos.toPixel(Maze.CELL_SIZE).midPoint(
-                snd.pos.toPixel(Maze.CELL_SIZE));
 
-        if (this.horizontal(edge)) {
-            CartPt startPoint1 = new CartPt(middle.x, middle.y - Maze.CELL_SIZE
-                    / 2);
-            CartPt startPoint2 = new CartPt(middle.x, middle.y + Maze.CELL_SIZE
-                    / 2);
-
-            return new LineImage(startPoint1, startPoint2, new Color(255, 255,
-                    255));
-        } else {
-            CartPt startPoint1 = new CartPt(middle.x - Maze.CELL_SIZE / 2,
-                    middle.y);
-            CartPt startPoint2 = new CartPt(middle.x + Maze.CELL_SIZE / 2,
-                    middle.y);
-            return new LineImage(startPoint1, startPoint2, new Color(255, 255,
-                    255));
+        return new LineImage(
+                fst.pos.findBiggerPoint(snd.pos).scale(Maze.CELL_SIZE),
+                fst.pos.findPerpPoint(snd.pos).scale(Maze.CELL_SIZE),
+                new Color(125, 125, 125));
+    }
+    
+    WorldImage drawEdgesInGraph(WorldImage bg, ArrayList<Edge<CartPt>> edges) {
+        for (Edge<CartPt> e : edges) {
+            bg = bg.overlayImages(this.drawEdge(e));
         }
+        return bg;
     }
 
     WorldImage drawPath(Edge<CartPt> edge) {
         Node<CartPt> fst = edge.first;
         Node<CartPt> snd = edge.second;
         return new LineImage(fst.pos.toPixel(Maze.CELL_SIZE),
-                snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0, 255));
+                snd.pos.toPixel(Maze.CELL_SIZE), new Color(255, 0, 0));
     }
 
     /*
@@ -103,10 +115,10 @@ class Utils {
     ArrayList<ArrayList<Node<CartPt>>> generateGraphPosition(
             int horizontalDimension, int verticalDimension) {
         ArrayList<ArrayList<Node<CartPt>>> result = new ArrayList<ArrayList<Node<CartPt>>>();
-        for (int i = 0; i < verticalDimension; i += 1) {
+        for (int i = 0; i < horizontalDimension; i += 1) {
             ArrayList<Node<CartPt>> arr = new ArrayList<Node<CartPt>>();
-            for (int j = 0; j < horizontalDimension; j += 1) {
-                arr.add(new Node<CartPt>(new CartPt(i + 1, j + 1)));
+            for (int j = 0; j < verticalDimension; j += 1) {
+                arr.add(new Node<CartPt>(new CartPt(i, j)));
             }
             result.add(arr);
         }
@@ -146,7 +158,7 @@ class Utils {
         ArrayList<T> result = new ArrayList<T>();
         for (int i = 0; i < arr.size(); i += 1) {
             ArrayList<T> a = arr.get(i);
-            for (int j = 0; j < arr.size(); j += 1) {
+            for (int j = 0; j < a.size(); j += 1) {
                 result.add(a.get(j));
             }
         }

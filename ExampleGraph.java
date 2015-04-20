@@ -2,73 +2,9 @@ import tester.*;
 import java.util.*;
 
 class ExampleGraph {
-    ArrayList<Node<String>> nodes = new ArrayList<Node<String>>();
-    ArrayList<Edge<String>> edges = new ArrayList<Edge<String>>();
-    
-    Node<String> A = new Node<String>("A");
-    Node<String> B = new Node<String>("B");
-    Node<String> C = new Node<String>("C");
-    Node<String> D = new Node<String>("D");
-    Node<String> E = new Node<String>("E");
-    
-    Edge<String> AE = new Edge<String>(A, E, 1);
-    Edge<String> AB = new Edge<String>(A, B, 3);
-    Edge<String> BE = new Edge<String>(B, E, 4);
-    Edge<String> BC = new Edge<String>(B, C, 5);
-    Edge<String> CE = new Edge<String>(C, E, 6);
-    Edge<String> CD = new Edge<String>(C, D, 2);
-    Edge<String> ED = new Edge<String>(E, D, 7);
     
     
-    Node<CartPt> origin;
-    Node<CartPt> origin2;
-    CartPt ori;
-    
-    //Edge<String> DE = new Edge<String>(D, E, 7);
-    Utils ut = new Utils();
-    
-    Graph<String> gr = new Graph<String>(nodes, edges);
-    Graph<String> newGr;
-    Maze maze1;
-    Graph<CartPt> board1;
-    
-    Maze maze2;
-    Graph<CartPt> board2;
-    
-    void initialize() {
-        nodes.add(A);
-        nodes.add(B);
-        nodes.add(C);
-        nodes.add(D);
-        nodes.add(E);
-        
-        edges.add(AE);
-        edges.add(AB);
-        edges.add(BE);
-        edges.add(BC);
-        edges.add(CE);
-        edges.add(CD);
-        edges.add(ED);
-        newGr = gr.minimumSpanningTree();
-        
-        board1 = new Graph<CartPt>();
-        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(20, 20);
-        board1.nodes = ut.toArrayList(graphNodes);
-        board1.edges = ut.connectMaze(graphNodes);
-        ut.shuffle(board1.edges);
-        maze1 = new Maze(board1);
-        
-        board2 = new Graph<CartPt>();
-        origin = new Node<CartPt>(new CartPt(1, 1));
-        origin2 = new Node<CartPt>(new CartPt(0, 1));
-        board2.nodes.add(origin);
-        board2.nodes.add(origin2);
-        maze2 = new Maze(board2);
-        
-        ori = new CartPt(0, 0);
-    }
-    
-    void testNode(Tester t) {
+   /* void testNode(Tester t) {
         this.initialize();
         t.checkExpect(AE.containNode(A), true);
         t.checkExpect(AE.containNode(E), true);
@@ -93,18 +29,84 @@ class ExampleGraph {
     }
     
     void testDraw(Tester t) {
-        this.initialize();
-        /*t.checkExpect(board1.edges.size(), 12);
-        t.checkExpect(board1.nodes.size(), 9);*/
-        maze1.bigBang(820, 820, 0.1);
+        //this.initialize();
+        t.checkExpect(board1.edges.size(), 12);
+        t.checkExpect(board1.nodes.size(), 9);
+        maze1.bigBang(1000, 1000, 0.1);
     }
     
     void testSpanTree(Tester t) {
-        /*this.initialize();
+        this.initialize();
         Graph<CartPt> gra = maze1.board.minimumSpanningTree();
         t.checkExpect(gra.nodes.size(), 9);
         t.checkExpect(gra.edges.size(), 8);
-        t.checkExpect(gr.noEmptyEdge(), true);*/
+        t.checkExpect(gr.noEmptyEdge(), true);
         //t.checkExpect(newGr.noEmptyEdge(), true);
+    }*/
+    public static void main(String[] args) {
+        ArrayList<Node<String>> nodes = new ArrayList<Node<String>>();
+        ArrayList<Edge<String>> edges = new ArrayList<Edge<String>>();
+        
+        Node<String> A = new Node<String>("A");
+        Node<String> B = new Node<String>("B");
+        Node<String> C = new Node<String>("C");
+        Node<String> D = new Node<String>("D");
+        Node<String> E = new Node<String>("E");
+        
+        Edge<String> AE = new Edge<String>(A, E, 1);
+        Edge<String> AB = new Edge<String>(A, B, 3);
+        Edge<String> BE = new Edge<String>(B, E, 4);
+        Edge<String> BC = new Edge<String>(B, C, 5);
+        Edge<String> CE = new Edge<String>(C, E, 6);
+        Edge<String> CD = new Edge<String>(C, D, 2);
+        Edge<String> ED = new Edge<String>(E, D, 7);
+        
+        
+        Node<CartPt> origin;
+        Node<CartPt> origin2;
+        CartPt ori;
+        
+        //Edge<String> DE = new Edge<String>(D, E, 7);
+        Utils ut = new Utils();
+        
+        Graph<String> gr = new Graph<String>(nodes, edges);
+        Graph<String> newGr;
+        Maze maze1;
+        Graph<CartPt> board1;
+        
+        Maze maze2;
+        Graph<CartPt> board2;
+        nodes.add(A);
+        nodes.add(B);
+        nodes.add(C);
+        nodes.add(D);
+        nodes.add(E);
+        
+        edges.add(AE);
+        edges.add(AB);
+        edges.add(BE);
+        edges.add(BC);
+        edges.add(CE);
+        edges.add(CD);
+        edges.add(ED);
+        newGr = gr.minimumSpanningTree();
+        
+        board1 = new Graph<CartPt>();
+        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(100, 60);
+        board1.nodes = ut.toArrayList(graphNodes);
+        board1.edges = ut.connectMaze(graphNodes);
+        ut.shuffle(board1.edges);
+        maze1 = new Maze(board1);
+        
+        board2 = new Graph<CartPt>();
+        origin = new Node<CartPt>(new CartPt(1, 1));
+        origin2 = new Node<CartPt>(new CartPt(0, 1));
+        board2.nodes.add(origin);
+        board2.nodes.add(origin2);
+        maze2 = new Maze(board2);
+        
+        ori = new CartPt(0, 0);
+        
+        maze1.bigBang(1502, 902);
     }
 }

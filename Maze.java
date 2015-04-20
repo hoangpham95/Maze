@@ -8,34 +8,35 @@ class Maze extends World{
     Graph<CartPt> board;
     ArrayList<Edge<CartPt>> path;
     
-    static final int CELL_SIZE = 30;
-    CartPt player;
-    CartPt destination;
+    static final int CELL_SIZE = 15;
+    Node<CartPt> player;
+    Node<CartPt> destination;
     Utils ut = new Utils();
     
     Maze(Graph<CartPt> board) {
         this.board = board;
+        this.player = this.board.nodes.get(0);
+        int last = this.board.nodes.size() - 1;
+        this.destination = this.board.nodes.get(last);
         this.path = new ArrayList<Edge<CartPt>>();
     }
 
     public WorldImage makeImage() {
-        WorldImage background = new RectangleImage(new Posn(410, 410), 820, 820, new Color(255, 255, 255));
+        WorldImage background = new RectangleImage(new Posn(750, 450), 1501, 901, new Color(125, 125, 125));
         Utils ut = new Utils();
         WorldImage bg = ut.drawGraph(background, this.board);
-        return ut.drawGraphPath(bg, this.path);
+        bg = bg.overlayImages(this.player.pos.draw(new Color(0, 0, 255)));
+        bg = bg.overlayImages(this.destination.pos.draw(new Color(255, 150, 150)));
+        return bg;
     }
     
     public void onKeyEvent(String ke) {
         if (ke.equals("m")) {
             this.board = this.board.minimumSpanningTree();
         }
-        if (ke.equals("p")) {
-            /* Add the path in to the maze */
-            this.path = this.board.edges;
+        if (ke.equals("e")) {
+            WorldImage bg = this.makeImage();
+            bg = ut.drawGraphPath(bg, this.path);
         }
-    }
-    
-    public void onTick() {
-        
     }
 }
