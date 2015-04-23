@@ -23,51 +23,94 @@ class Utils {
     /*
      * Draw the graph on the given background
      */
-    WorldImage drawGraph(WorldImage background, Graph<CartPt> board) {
+    WorldImage drawGraph(WorldImage background, Graph<CartPt> board, Color c) {
         ArrayList<Node<CartPt>> nodes = board.nodes;
-        ArrayList<Edge<CartPt>> edges = board.edges;
-        for (Node<CartPt> node : nodes) {
-            background = background.overlayImages(this.drawNode(node));
-        }
-        background = background.overlayImages(this.drawEdgeArrayHelp(edges, 0, edges.size()));
+        background = background.overlayImages(this.drawNodeArrayHelp(nodes, 0, nodes.size(), c));
         return background;
     }
     
-    private WorldImage drawEdgeArrayHelp(ArrayList<Edge<CartPt>> arr, int minIndex,
-            int maxIndex) {
+    private WorldImage drawNodeArrayHelp(ArrayList<Node<CartPt>> arr, int minIndex,
+            int maxIndex, Color c) {
         if (maxIndex - minIndex == 1) {
-            return this.drawEdge(arr.get(minIndex));
+            return this.drawNode(arr.get(minIndex), c);
         }
         else {
-            WorldImage image1 = this.drawEdgeArrayHelp(arr, minIndex,
-                    (minIndex + maxIndex) / 2);
-            WorldImage image2 = this.drawEdgeArrayHelp(arr,
-                    (minIndex + maxIndex) / 2, maxIndex);
+            WorldImage image1 = this.drawNodeArrayHelp(arr, minIndex,
+                    (minIndex + maxIndex) / 2, c);
+            WorldImage image2 = this.drawNodeArrayHelp(arr,
+                    (minIndex + maxIndex) / 2, maxIndex, c);
             return image1.overlayImages(image2);
         }
     }
     
-    /*
-     * Draw the node framed outside
-     */
-    private WorldImage drawNode(Node<CartPt> node) {
-        /*
-         * This node is original node. Need to translate to board's position
-         */
-        return new FrameImage(node.pos.toPixel(Maze.CELL_SIZE), Maze.CELL_SIZE,
-                Maze.CELL_SIZE, new Color(0, 0, 0));
-        /*
-         * return new DiskImage(node.pos.toPixel(Maze.CELL_SIZE), 5, new
-         * Color(0, 0, 0));
-         */
+    
+    WorldImage drawNode(Node<CartPt> node, Color c) {
+    	WorldImage bg = new RectangleImage(node.pos.toPixel(Maze.CELL_SIZE), Maze.CELL_SIZE,
+                Maze.CELL_SIZE, c);
+    	CartPt pos = node.pos.toPixel(Maze.CELL_SIZE);
+
+    	if (this.getNeighbor(node, "up") == node) {
+    		bg = bg.overlayImages(bg,
+    				new LineImage(new CartPt(pos.x - Maze.CELL_SIZE / 2, pos.y - Maze.CELL_SIZE / 2),
+    						      new CartPt(pos.x + Maze.CELL_SIZE / 2, pos.y - Maze.CELL_SIZE / 2),
+    						      Maze.EDGE_COLOR));
+    	} 
+    	if (this.getNeighbor(node, "down") == node) {
+    		bg = bg.overlayImages(bg,
+    				new LineImage(new CartPt(pos.x - Maze.CELL_SIZE / 2, pos.y + Maze.CELL_SIZE / 2),
+    						      new CartPt(pos.x + Maze.CELL_SIZE / 2, pos.y + Maze.CELL_SIZE / 2),
+    						      Maze.EDGE_COLOR));
+    	}
+    	if (this.getNeighbor(node, "left") == node) {
+    		bg = bg.overlayImages(bg,
+    				new LineImage(new CartPt(pos.x - Maze.CELL_SIZE / 2, pos.y - Maze.CELL_SIZE / 2),
+    						      new CartPt(pos.x - Maze.CELL_SIZE / 2, pos.y + Maze.CELL_SIZE / 2),
+    						      Maze.EDGE_COLOR));
+    	} 
+    	if (this.getNeighbor(node, "right") == node) {
+    		bg = bg.overlayImages(bg,
+    				new LineImage(new CartPt(pos.x + Maze.CELL_SIZE / 2, pos.y - Maze.CELL_SIZE / 2),
+    						      new CartPt(pos.x + Maze.CELL_SIZE / 2, pos.y + Maze.CELL_SIZE / 2),
+    						      Maze.EDGE_COLOR));
+    	} 
+    	return bg;
     }
     
-    WorldImage drawNodesInGraph(WorldImage bg, ArrayList<Node<CartPt>> nodes) {
-        for (Node<CartPt> n : nodes) {
-            bg = bg.overlayImages(this.drawNode(n));
-        }
-        return bg;
+    Node<CartPt> getNeighbor(Node<CartPt> node, String dir) {
+    	ArrayList<Edge<CartPt>> edges = node.edges;
+    	if (dir.equals("left")) {
+    		for (Edge<CartPt> e : edges) {
+    			if (this.horizontal(e)) {
+    				Node<CartPt> other = e.getOtherNode(node);
+    				if (node.pos.x > other.pos.x) return other;
+    			}
+    		}
+    	} else if (dir.equals("right")) {
+    		for (Edge<CartPt> e : edges) {
+    			if (this.horizontal(e)) {
+    				Node<CartPt> other = e.getOtherNode(node);
+    				if (other.pos.x > node.pos.x) return other;
+    			}
+    		}
+    	} else if (dir.equals("up")) {
+    		for (Edge<CartPt> e : edges) {
+    			if (this.vertical(e)) {
+    				Node<CartPt> other = e.getOtherNode(node);
+    				if (node.pos.y > other.pos.y) return other;
+    			}
+    		}
+    	} else if (dir.equals("down")) {
+    		for (Edge<CartPt> e : edges) {
+    			if (this.vertical(e)) {
+    				Node<CartPt> other = e.getOtherNode(node);
+    				if (other.pos.y > node.pos.y) return other;
+    			}
+    		}
+    	} 
+    	return node;
     }
+    
+
 
     /*
      * Draw the edge between two node: if the (real) edge is vertical, draw the
@@ -80,7 +123,7 @@ class Utils {
         return new LineImage(
                 fst.pos.findBiggerPoint(snd.pos).scale(Maze.CELL_SIZE),
                 fst.pos.findPerpPoint(snd.pos).scale(Maze.CELL_SIZE),
-                new Color(125, 125, 125));
+                Maze.EDGE_COLOR);
     }
     
     WorldImage drawEdgesInGraph(WorldImage bg, ArrayList<Edge<CartPt>> edges) {

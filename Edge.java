@@ -34,4 +34,17 @@ class Edge<T> {
         return this.first == node
             || this.second == node;
     }
+    
+    Node<T> getOtherNode(Node<CartPt> n) {
+    	Node<T> n1 = this.first;
+    	Node<T> n2 = this.second;
+    	
+    	if (n == n1) {
+    		return n2;
+    	} else if (n == n2) {
+    		return n1;
+    	} else {
+    		throw new IllegalArgumentException("No other node");
+    	}
+    }
 }

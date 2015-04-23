@@ -92,7 +92,7 @@ class ExampleGraph {
         newGr = gr.minimumSpanningTree();
         
         board1 = new Graph<CartPt>();
-        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(100, 60);
+        ArrayList<ArrayList<Node<CartPt>>> graphNodes = ut.generateGraphPosition(Maze.WIDTH, Maze.HEIGHT);
         board1.nodes = ut.toArrayList(graphNodes);
         board1.edges = ut.connectMaze(graphNodes);
         ut.shuffle(board1.edges);

@@ -65,4 +65,8 @@ class CartPt extends Posn {
            return pt;
        }
     }
+    
+    boolean isBiggerPoint(CartPt other) {
+    	return this.findBiggerPoint(other) == this;
+    }
 }
